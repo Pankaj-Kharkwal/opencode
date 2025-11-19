@@ -46,7 +46,7 @@ const model = await LangChainProvider.createChatModel(
     temperature: 0.7,
     maxTokens: 4096,
     streaming: true,
-  }
+  },
 )
 ```
 
@@ -127,9 +127,7 @@ const result = await pipeline.execute({ code: sourceCode })
 // Create a router
 const router = new ToolChannel.Router({
   name: "task_router",
-  routes: [
-    { condition: (input) => input.type === "code", channel: "code_channel", priority: 10 },
-  ],
+  routes: [{ condition: (input) => input.type === "code", channel: "code_channel", priority: 10 }],
   defaultChannel: "general_channel",
 })
 
@@ -198,10 +196,7 @@ await mcpManager.registerServer("filesystem", fsClient)
 await mcpManager.registerServer("database", dbClient)
 
 // Get all tools (MCP + OpenCode)
-const allTools = [
-  ...mcpManager.getAllTools(),
-  ...LangChainTools.convertAllTools(opencodeTools, session),
-]
+const allTools = [...mcpManager.getAllTools(), ...LangChainTools.convertAllTools(opencodeTools, session)]
 
 // Use in workflow
 const workflow = new LangGraph.AgentWorkflow(model, allTools, session)
@@ -269,9 +264,9 @@ Create an `opencode.jsonc` file:
         "enabled": true,
         "maxAttempts": 3,
         "delay": 1000,
-        "backoff": "exponential"
+        "backoff": "exponential",
       },
-      "timeout": 30000
+      "timeout": 30000,
     },
     "flow": {
       "enabled": true,
@@ -279,35 +274,31 @@ Create an `opencode.jsonc` file:
         "code_review": {
           "description": "Automated code review",
           "type": "code_review",
-          "model": "anthropic/claude-sonnet-4-5"
-        }
-      }
+          "model": "anthropic/claude-sonnet-4-5",
+        },
+      },
     },
     "mcpBridge": {
       "enabled": true,
       "autoRegisterServers": true,
       "serverPrefixInToolName": true,
-      "refreshInterval": 0
+      "refreshInterval": 0,
     },
     "channel": {
       "enabled": true,
       "pipelines": {
         "quality": {
           "description": "Code quality pipeline",
-          "steps": [
-            { "tool": "lint" },
-            { "tool": "format" },
-            { "tool": "test" }
-          ]
-        }
-      }
+          "steps": [{ "tool": "lint" }, { "tool": "format" }, { "tool": "test" }],
+        },
+      },
     },
     "logging": {
       "enabled": true,
       "level": "info",
-      "verbose": false
-    }
-  }
+      "verbose": false,
+    },
+  },
 }
 ```
 

@@ -26,9 +26,7 @@ export namespace LangChainExamples {
     console.log("Connection test:", isConnected ? "SUCCESS" : "FAILED")
 
     // Use the model
-    const response = await chatModel.invoke([
-      { role: "user", content: "Explain LangChain in one sentence." },
-    ])
+    const response = await chatModel.invoke([{ role: "user", content: "Explain LangChain in one sentence." }])
     console.log("Response:", response.content)
 
     return response

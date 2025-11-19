@@ -220,10 +220,7 @@ export namespace ResumableWorkflow {
   /**
    * Resume a workflow from a session ID
    */
-  export async function resumeWorkflow(
-    sessionID: string,
-    session: Session.Type,
-  ): Promise<any> {
+  export async function resumeWorkflow(sessionID: string, session: Session.Type): Promise<any> {
     log.info(`Attempting to resume workflow for session ${sessionID}`)
 
     const state = globalStateManager.load(sessionID)
@@ -252,7 +249,7 @@ export namespace ResumableWorkflow {
     state: WorkflowState
   }> {
     const sessions = globalStateManager.getSessions()
-    return sessions.map(sessionID => ({
+    return sessions.map((sessionID) => ({
       sessionID,
       state: globalStateManager.load(sessionID)!,
     }))
@@ -297,12 +294,16 @@ export namespace ResumableWorkflow {
 
         const result = await execute()
 
-        return JSON.stringify({
-          sessionID,
-          status: "completed",
-          result: result.context.finalResponse,
-          canResume: true,
-        }, null, 2)
+        return JSON.stringify(
+          {
+            sessionID,
+            status: "completed",
+            result: result.context.finalResponse,
+            canResume: true,
+          },
+          null,
+          2,
+        )
       },
     })
   }
@@ -324,11 +325,7 @@ export namespace ResumableWorkflow {
     /**
      * Execute workflow with checkpoints
      */
-    async execute(
-      task: string,
-      checkpointNames: string[],
-      context?: Record<string, any>,
-    ): Promise<any> {
+    async execute(task: string, checkpointNames: string[], context?: Record<string, any>): Promise<any> {
       log.info(`Executing workflow with ${checkpointNames.length} checkpoints`)
 
       let currentContext = context || {}
@@ -364,11 +361,7 @@ export namespace ResumableWorkflow {
     /**
      * Resume from a specific checkpoint
      */
-    async resumeFrom(
-      checkpointName: string,
-      task: string,
-      remainingCheckpoints: string[],
-    ): Promise<any> {
+    async resumeFrom(checkpointName: string, task: string, remainingCheckpoints: string[]): Promise<any> {
       const checkpoint = this.checkpoints.get(checkpointName)
       if (!checkpoint) {
         throw new Error(`Checkpoint ${checkpointName} not found`)

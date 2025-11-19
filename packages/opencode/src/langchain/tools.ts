@@ -68,7 +68,10 @@ export namespace LangChainTools {
   /**
    * Converts all OpenCode tools to LangChain tools
    */
-  export function convertAllTools(tools: OpenCodeTool.Definition<any>[], session: Session.Type): DynamicStructuredTool[] {
+  export function convertAllTools(
+    tools: OpenCodeTool.Definition<any>[],
+    session: Session.Type,
+  ): DynamicStructuredTool[] {
     log.info(`Converting ${tools.length} OpenCode tools to LangChain format`)
     return tools.map((tool) => convertToLangChainTool(tool, session))
   }
@@ -130,10 +133,7 @@ export namespace LangChainTools {
       // Build execution graph from dependencies
       if (config.dependencies) {
         for (const [tool, deps] of Object.entries(config.dependencies)) {
-          this.executionGraph.set(
-            tool,
-            new Set(deps.map((d) => d.toolName)),
-          )
+          this.executionGraph.set(tool, new Set(deps.map((d) => d.toolName)))
         }
       }
     }

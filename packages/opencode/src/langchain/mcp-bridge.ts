@@ -8,11 +8,7 @@ import { z } from "zod"
 import { Log } from "../util/log"
 import { MCP } from "../mcp"
 import type { Client } from "@modelcontextprotocol/sdk/client/index.js"
-import type {
-  Tool as MCPTool,
-  CallToolResult,
-  ListToolsResult,
-} from "@modelcontextprotocol/sdk/types.js"
+import type { Tool as MCPTool, CallToolResult, ListToolsResult } from "@modelcontextprotocol/sdk/types.js"
 
 export namespace MCPLangChainBridge {
   const log = Log.create({ service: "mcp-langchain-bridge" })
@@ -56,10 +52,7 @@ export namespace MCPLangChainBridge {
   /**
    * Converts all MCP tools from a server to LangChain tools
    */
-  export async function convertAllMCPTools(
-    client: Client,
-    serverName: string,
-  ): Promise<DynamicStructuredTool[]> {
+  export async function convertAllMCPTools(client: Client, serverName: string): Promise<DynamicStructuredTool[]> {
     try {
       log.info(`Fetching MCP tools from ${serverName}`)
 

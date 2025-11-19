@@ -285,23 +285,22 @@ export namespace LangChainAdapters {
   /**
    * Create a complete tool suite for LangChain workflows
    */
-  export function createToolSuite(session: Session.Type, options: {
-    includeCommonTools?: boolean
-    customTools?: any[]
-    toolFilter?: (toolName: string) => boolean
-  } = {}): DynamicStructuredTool[] {
-    const {
-      includeCommonTools = true,
-      customTools = [],
-      toolFilter = () => true,
-    } = options
+  export function createToolSuite(
+    session: Session.Type,
+    options: {
+      includeCommonTools?: boolean
+      customTools?: any[]
+      toolFilter?: (toolName: string) => boolean
+    } = {},
+  ): DynamicStructuredTool[] {
+    const { includeCommonTools = true, customTools = [], toolFilter = () => true } = options
 
     const tools: DynamicStructuredTool[] = []
 
     // Add common tools if requested
     if (includeCommonTools) {
       const commonTools = CommonToolAdapters.getAll(session)
-      tools.push(...commonTools.filter(tool => toolFilter(tool.name)))
+      tools.push(...commonTools.filter((tool) => toolFilter(tool.name)))
       log.info(`Added ${commonTools.length} common tools`)
     }
 
@@ -312,7 +311,7 @@ export namespace LangChainAdapters {
         adapter.register(tool.name, tool)
       }
       const langchainTools = adapter.createAllTools()
-      tools.push(...langchainTools.filter(tool => toolFilter(tool.name)))
+      tools.push(...langchainTools.filter((tool) => toolFilter(tool.name)))
       log.info(`Added ${customTools.length} custom tools`)
     }
 
@@ -354,7 +353,7 @@ export namespace LangChainAdapters {
           }
 
           if (attempt < this.options.maxRetries!) {
-            await new Promise(resolve => setTimeout(resolve, this.options.retryDelay!))
+            await new Promise((resolve) => setTimeout(resolve, this.options.retryDelay!))
           }
         }
       }

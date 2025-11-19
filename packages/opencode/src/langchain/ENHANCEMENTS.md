@@ -167,6 +167,7 @@ const available = WorkflowTemplates.listWorkflows()
 Three new LangChain-powered agents in `.opencode/agent/`:
 
 #### `langchain-workflow.md`
+
 Multi-step planning and execution with dependency management, retry logic, and state management.
 
 ```bash
@@ -175,7 +176,9 @@ Multi-step planning and execution with dependency management, retry logic, and s
 ```
 
 #### `code-reviewer.md`
+
 Comprehensive code review analyzing:
+
 - Code style & best practices
 - Security vulnerabilities (OWASP Top 10)
 - Performance optimization opportunities
@@ -187,7 +190,9 @@ Comprehensive code review analyzing:
 ```
 
 #### `rag-assistant.md`
+
 RAG-powered assistant with semantic search and context retrieval:
+
 - Vector-based similarity search
 - Hybrid keyword + semantic search
 - Codebase understanding
@@ -201,6 +206,7 @@ RAG-powered assistant with semantic search and context retrieval:
 ## Integration Points
 
 ### With Task Tool
+
 ```typescript
 // Task tool now supports resumable workflows
 {
@@ -212,6 +218,7 @@ RAG-powered assistant with semantic search and context retrieval:
 ```
 
 ### With Session Processor
+
 ```typescript
 // Stream workflow progress to session
 const processor = SessionProcessor.create(...)
@@ -220,6 +227,7 @@ await processor.process(workflowProcessor)
 ```
 
 ### With MCP Servers
+
 ```typescript
 // Automatically convert all MCP tools to LangChain
 const mcpManager = new MCPLangChainBridge.MCPServerManager()
@@ -230,6 +238,7 @@ const allTools = mcpManager.getAllTools() // Ready for LangChain workflows
 ## Configuration Examples
 
 ### Enable Resumable Workflows
+
 ```jsonc
 {
   "langchain": {
@@ -240,47 +249,50 @@ const allTools = mcpManager.getAllTools() // Ready for LangChain workflows
         "enabled": true,
         "maxAttempts": 3,
         "delay": 1000,
-        "backoff": "exponential"
-      }
-    }
-  }
+        "backoff": "exponential",
+      },
+    },
+  },
 }
 ```
 
 ### Configure Memory & RAG
+
 ```jsonc
 {
   "langchain": {
     "memory": {
       "maxMessages": 100,
       "chunkSize": 1000,
-      "chunkOverlap": 200
+      "chunkOverlap": 200,
     },
     "rag": {
       "enabled": true,
       "maxResults": 5,
-      "scoreThreshold": 0.7
-    }
-  }
+      "scoreThreshold": 0.7,
+    },
+  },
 }
 ```
 
 ### Enable MCP Bridge
+
 ```jsonc
 {
   "langchain": {
     "mcpBridge": {
       "enabled": true,
       "autoRegisterServers": true,
-      "serverPrefixInToolName": true
-    }
-  }
+      "serverPrefixInToolName": true,
+    },
+  },
 }
 ```
 
 ## Usage Examples
 
 ### Complete Feature Implementation
+
 ```typescript
 import { LangChainProvider, LangGraph, WorkflowTemplates, LangChainMemory } from "@/langchain"
 
@@ -307,6 +319,7 @@ const review = await reviewer.execute(result.context.implementedCode)
 ```
 
 ### Resumable Multi-Session Workflow
+
 ```typescript
 import { ResumableWorkflow } from "@/langchain"
 
@@ -327,28 +340,26 @@ const result = await ResumableWorkflow.resumeWorkflow("session_1", session)
 ```
 
 ### Batch Code Review
+
 ```typescript
 import { LangChainProcessor } from "@/langchain"
 
 const filesToReview = ["src/api/*.ts"]
 const reviewWorkflow = new LangGraph.CodeReviewWorkflow(model)
 
-const results = await LangChainProcessor.batchProcess(
-  reviewWorkflow,
-  filesToReview,
-  {
-    parallel: true,
-    maxConcurrency: 5,
-    onProgress: (completed, total) => {
-      console.log(`Reviewed ${completed}/${total} files`)
-    },
-  }
-)
+const results = await LangChainProcessor.batchProcess(reviewWorkflow, filesToReview, {
+  parallel: true,
+  maxConcurrency: 5,
+  onProgress: (completed, total) => {
+    console.log(`Reviewed ${completed}/${total} files`)
+  },
+})
 ```
 
 ## Testing
 
 All new features include:
+
 - Type safety with TypeScript
 - Comprehensive error handling
 - Logging for debugging
@@ -360,6 +371,7 @@ All new features include:
 Existing LangChain integrations continue to work. New features are opt-in:
 
 1. **Update imports**:
+
    ```typescript
    // Before
    import { LangChainProvider } from "@/langchain"
@@ -393,6 +405,7 @@ Existing LangChain integrations continue to work. New features are opt-in:
 ## Support
 
 For issues or questions:
+
 - Check the main README.md for API reference
 - See examples.ts for comprehensive usage examples
 - Review agent definitions in `.opencode/agent/`

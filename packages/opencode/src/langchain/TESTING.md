@@ -3,12 +3,14 @@
 ## Prerequisites
 
 1. **Install dependencies**:
+
    ```bash
    cd /home/user/opencode
    bun install
    ```
 
 2. **Set up API keys** (in `.env` or environment):
+
    ```bash
    export ANTHROPIC_API_KEY="your-key-here"
    export OPENAI_API_KEY="your-key-here"  # Optional
@@ -32,6 +34,7 @@ touch packages/opencode/test/langchain/provider.test.ts
 ```
 
 **Example Test**:
+
 ```typescript
 import { describe, test, expect } from "bun:test"
 import { LangChainProvider } from "@/langchain"
@@ -59,6 +62,7 @@ describe("LangChain Provider", () => {
 ```
 
 **Run tests**:
+
 ```bash
 cd packages/opencode
 bun test test/langchain/
@@ -103,6 +107,7 @@ console.log("RAG system initialized")
 ### Method 3: Integration Testing via OpenCode CLI
 
 1. **Configure OpenCode** (create/edit `.opencode/opencode.jsonc`):
+
    ```jsonc
    {
      "langchain": {
@@ -111,37 +116,40 @@ console.log("RAG system initialized")
          "defaultStrategy": "sequential",
          "retryConfig": {
            "enabled": true,
-           "maxAttempts": 3
-         }
+           "maxAttempts": 3,
+         },
        },
        "flow": {
-         "enabled": true
+         "enabled": true,
        },
        "mcpBridge": {
          "enabled": true,
-         "autoRegisterServers": true
+         "autoRegisterServers": true,
        },
        "logging": {
          "enabled": true,
          "level": "debug",
-         "verbose": true
-       }
-     }
+         "verbose": true,
+       },
+     },
    }
    ```
 
 2. **Test via OpenCode session**:
+
    ```bash
    cd /home/user/opencode
    packages/opencode/bin/opencode
    ```
 
    In OpenCode, try:
+
    ```
    > Use the langchain-workflow agent to analyze the README.md file
    ```
 
 3. **Test specific agents**:
+
    ```
    > Use the code-reviewer agent to review src/langchain/provider.ts
 
@@ -157,6 +165,7 @@ touch packages/opencode/test-langchain.ts
 ```
 
 **Content**:
+
 ```typescript
 import { LangChainProvider, LangGraph, LangChainMemory, WorkflowTemplates } from "./src/langchain"
 import { Log } from "./src/util/log"
@@ -174,9 +183,7 @@ async function testProvider() {
 
     log.info("✅ Model created successfully")
 
-    const response = await model.invoke([
-      { role: "user", content: "Say 'test successful' if you can read this" },
-    ])
+    const response = await model.invoke([{ role: "user", content: "Say 'test successful' if you can read this" }])
 
     log.info("✅ Model response:", response.content)
     return true
@@ -243,7 +250,7 @@ async function testWorkflows() {
     const workflows = WorkflowTemplates.listWorkflows()
     log.info("✅ Available workflows:", workflows.length)
 
-    workflows.forEach(w => {
+    workflows.forEach((w) => {
       log.info(`  - ${w.name}: ${w.description}`)
     })
 
@@ -276,7 +283,7 @@ async function runAllTests() {
     log.info(`${passed ? "✅" : "❌"} ${name}`)
   }
 
-  const allPassed = Object.values(results).every(r => r)
+  const allPassed = Object.values(results).every((r) => r)
   log.info(`\n${allPassed ? "✅ All tests passed!" : "❌ Some tests failed"}`)
 
   process.exit(allPassed ? 0 : 1)
@@ -286,6 +293,7 @@ runAllTests()
 ```
 
 **Run it**:
+
 ```bash
 bun run packages/opencode/test-langchain.ts
 ```
@@ -347,9 +355,9 @@ console.log("MCP tools:", tools.length)
     "logging": {
       "enabled": true,
       "level": "debug",
-      "verbose": true
-    }
-  }
+      "verbose": true,
+    },
+  },
 }
 ```
 
@@ -370,15 +378,19 @@ bun run typecheck
 ### Common Issues
 
 1. **API Key Missing**:
+
    ```
    Error: Anthropic API key not found
    ```
+
    Solution: Set `ANTHROPIC_API_KEY` environment variable
 
 2. **Module Not Found**:
+
    ```
    Cannot find module '@/langchain'
    ```
+
    Solution: Build the project first with `bun run build`
 
 3. **Type Errors**:
@@ -403,11 +415,13 @@ async function benchmarkWorkflow() {
 ## Testing in Production-like Environment
 
 1. **Use real session**:
+
    ```bash
    opencode --session-id test-langchain
    ```
 
 2. **Test with actual code files**:
+
    ```
    > Use the rag-assistant to index all TypeScript files in src/
    > Use the code-reviewer to review src/langchain/provider.ts
@@ -470,6 +484,7 @@ After running tests, manually verify:
 ## Support
 
 If tests fail:
+
 1. Check the logs in `~/.opencode/logs/`
 2. Enable verbose logging
 3. Verify API keys are set correctly

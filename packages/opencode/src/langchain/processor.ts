@@ -30,9 +30,10 @@ export namespace LangChainProcessor {
 
         // Convert result to session-compatible format
         return {
-          text: typeof result.context.finalResponse === "string"
-            ? result.context.finalResponse
-            : JSON.stringify(result.context.finalResponse, null, 2),
+          text:
+            typeof result.context.finalResponse === "string"
+              ? result.context.finalResponse
+              : JSON.stringify(result.context.finalResponse, null, 2),
           metadata: {
             workflowType: workflow instanceof LangGraph.AgentWorkflow ? "agent" : "code_review",
             steps: result.results.length,
@@ -270,11 +271,7 @@ export namespace LangChainProcessor {
     /**
      * Resume from checkpoint
      */
-    async resume(
-      workflow: LangGraph.AgentWorkflow,
-      fromStep: string,
-      task: string,
-    ): Promise<any> {
+    async resume(workflow: LangGraph.AgentWorkflow, fromStep: string, task: string): Promise<any> {
       const checkpoint = this.load(fromStep)
       if (!checkpoint) {
         throw new Error(`Checkpoint ${fromStep} not found`)

@@ -216,11 +216,7 @@ export namespace LangChainMemory {
     /**
      * Search similar documents
      */
-    async similaritySearch(
-      contextID: string,
-      query: string,
-      k: number = 5,
-    ): Promise<Document[]> {
+    async similaritySearch(contextID: string, query: string, k: number = 5): Promise<Document[]> {
       const store = await this.getStore(contextID)
       const results = await store.similaritySearch(query, k)
       log.debug(`Found ${results.length} similar documents for query`)
@@ -279,12 +275,7 @@ export namespace LangChainMemory {
 
       log.info(`Retrieving context for query in ${contextID}`)
 
-      const results = await this.vectorManager.similaritySearchWithScore(
-        contextID,
-        query,
-        maxResults,
-        scoreThreshold,
-      )
+      const results = await this.vectorManager.similaritySearchWithScore(contextID, query, maxResults, scoreThreshold)
 
       if (results.length === 0) {
         log.warn("No relevant context found")
@@ -307,14 +298,11 @@ export namespace LangChainMemory {
     /**
      * Build RAG prompt with retrieved context
      */
-    async buildRAGPrompt(
-      contextID: string,
-      query: string,
-      systemPrompt?: string,
-    ): Promise<string> {
+    async buildRAGPrompt(contextID: string, query: string, systemPrompt?: string): Promise<string> {
       const context = await this.retrieveContext(contextID, query)
 
-      const prompt = `${systemPrompt || "You are a helpful AI assistant."}\n\n` +
+      const prompt =
+        `${systemPrompt || "You are a helpful AI assistant."}\n\n` +
         `Context Information:\n${context}\n\n` +
         `User Query: ${query}\n\n` +
         `Please answer the query using the provided context. If the context doesn't contain ` +
@@ -353,12 +341,7 @@ export namespace LangChainMemory {
     /**
      * Hybrid search: vector + keyword
      */
-    async hybridSearch(
-      contextID: string,
-      query: string,
-      keywords: string[],
-      k: number = 10,
-    ): Promise<Document[]> {
+    async hybridSearch(contextID: string, query: string, keywords: string[], k: number = 10): Promise<Document[]> {
       // Get vector search results
       const vectorResults = await this.vectorManager.similaritySearch(contextID, query, k)
 
