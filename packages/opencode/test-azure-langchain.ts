@@ -4,7 +4,13 @@
  * Tests all major features with your Azure configuration
  */
 
-import { LangChainProvider, LangChainMemory, LangChainAdapters, WorkflowTemplates, ResumableWorkflow } from "./src/langchain"
+import {
+  LangChainProvider,
+  LangChainMemory,
+  LangChainAdapters,
+  WorkflowTemplates,
+  ResumableWorkflow,
+} from "./src/langchain"
 import { Log } from "./src/util/log"
 
 const log = Log.create({ service: "test-azure" })
@@ -58,9 +64,7 @@ async function testConnection() {
   log.info("Testing Azure OpenAI connection...")
   const model = await LangChainProvider.createChatModel(AZURE_CONFIG, { maxTokens: 50 })
 
-  const response = await model.invoke([
-    { role: "user", content: "Say 'test successful' if you can read this." } as any,
-  ])
+  const response = await model.invoke([{ role: "user", content: "Say 'test successful' if you can read this." } as any])
 
   const content = String(response.content)
   log.info("Response received:", content.substring(0, 100))
@@ -117,15 +121,15 @@ async function testRAGSystem() {
   await vectorManager.indexDocuments("test-rag-context", [
     {
       content: "Azure OpenAI provides enterprise-grade AI capabilities with Microsoft Azure infrastructure",
-      metadata: { topic: "azure", source: "docs" }
+      metadata: { topic: "azure", source: "docs" },
     },
     {
       content: "LangChain is a framework for developing applications powered by language models",
-      metadata: { topic: "langchain", source: "docs" }
+      metadata: { topic: "langchain", source: "docs" },
     },
     {
       content: "TypeScript is a strongly typed programming language that builds on JavaScript",
-      metadata: { topic: "typescript", source: "docs" }
+      metadata: { topic: "typescript", source: "docs" },
     },
   ])
 
@@ -147,7 +151,7 @@ async function testToolAdapters() {
   if (tools.length === 0) throw new Error("No tools created")
 
   log.info(`✅ Created ${tools.length} common tools:`)
-  tools.forEach(tool => log.info(`   - ${tool.name}: ${tool.description}`))
+  tools.forEach((tool) => log.info(`   - ${tool.name}: ${tool.description}`))
 
   // Test tool suite
   const suite = LangChainAdapters.createToolSuite(mockSession, {
@@ -166,7 +170,7 @@ async function testWorkflowTemplates() {
   if (workflows.length === 0) throw new Error("No workflows found")
 
   log.info(`✅ Found ${workflows.length} workflow templates:`)
-  workflows.forEach(w => log.info(`   - ${w.name}: ${w.description}`))
+  workflows.forEach((w) => log.info(`   - ${w.name}: ${w.description}`))
 
   // Test creating a workflow
   const qualityWorkflow = WorkflowTemplates.createCodeQualityWorkflow(mockSession)
@@ -224,14 +228,16 @@ async function testAzureWithTools() {
   log.info(`✅ Created model with ${tools.length} tools`)
 
   // Test model with tools (binding)
-  const modelWithTools = model.bind({ tools: tools.map(t => ({
-    type: "function" as const,
-    function: {
-      name: t.name,
-      description: t.description,
-      parameters: {},
-    },
-  })) })
+  const modelWithTools = model.bind({
+    tools: tools.map((t) => ({
+      type: "function" as const,
+      function: {
+        name: t.name,
+        description: t.description,
+        parameters: {},
+      },
+    })),
+  })
 
   log.info(`✅ Successfully bound tools to model`)
 }
@@ -253,9 +259,7 @@ async function testEndToEndIntegration() {
   const tools = LangChainAdapters.CommonToolAdapters.getAll(mockSession)
 
   // 4. Test simple interaction
-  const response = await model.invoke([
-    { role: "user", content: "List 3 benefits of using TypeScript" } as any,
-  ])
+  const response = await model.invoke([{ role: "user", content: "List 3 benefits of using TypeScript" } as any])
 
   const content = String(response.content)
   if (!content || content.length < 10) throw new Error("Insufficient response")
@@ -266,15 +270,15 @@ async function testEndToEndIntegration() {
 
 // Main test runner
 async function runAllTests() {
-  log.info("=" .repeat(70))
+  log.info("=".repeat(70))
   log.info("🚀 LANGCHAIN INTEGRATION SMOKE TESTS - AZURE OPENAI")
-  log.info("=" .repeat(70))
+  log.info("=".repeat(70))
   log.info(`\nConfiguration:`)
   log.info(`  Provider: ${AZURE_CONFIG.provider}`)
   log.info(`  Deployment: ${AZURE_CONFIG.model}`)
   log.info(`  Endpoint: ${process.env.AZURE_OPENAI_ENDPOINT}`)
   log.info(`  API Version: ${process.env.AZURE_OPENAI_API_VERSION}`)
-  log.info("=" .repeat(70))
+  log.info("=".repeat(70))
 
   // Run all tests
   await runTest("1. Provider Creation", testProviderCreation)
@@ -293,11 +297,11 @@ async function runAllTests() {
   log.info("📊 TEST RESULTS")
   log.info("=".repeat(70))
 
-  const passed = results.filter(r => r.passed).length
-  const failed = results.filter(r => !r.passed).length
+  const passed = results.filter((r) => r.passed).length
+  const failed = results.filter((r) => !r.passed).length
   const totalDuration = results.reduce((sum, r) => sum + r.duration, 0)
 
-  results.forEach(r => {
+  results.forEach((r) => {
     const status = r.passed ? "✅ PASS" : "❌ FAIL"
     const duration = `${r.duration}ms`
     log.info(`${status.padEnd(10)} ${r.test.padEnd(45)} ${duration}`)

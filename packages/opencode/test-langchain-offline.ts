@@ -4,9 +4,9 @@
  * Tests integration code without making API calls
  */
 
-console.log("=" .repeat(70))
+console.log("=".repeat(70))
 console.log("🧪 LANGCHAIN INTEGRATION TESTS (OFFLINE MODE)")
-console.log("=" .repeat(70))
+console.log("=".repeat(70))
 
 let passed = 0
 let failed = 0
@@ -107,7 +107,7 @@ await test("Workflow Templates", async () => {
   if (workflows.length < 5) throw new Error(`Expected at least 5 workflows, got ${workflows.length}`)
 
   console.log(`  → Found ${workflows.length} workflow templates:`)
-  workflows.forEach(w => console.log(`     - ${w.name}`))
+  workflows.forEach((w) => console.log(`     - ${w.name}`))
 })
 
 // Test 8: Resumable Workflow State
@@ -175,12 +175,12 @@ await test("Agent Definitions exist", async () => {
 })
 
 // Summary
-console.log("\n" + "=" .repeat(70))
+console.log("\n" + "=".repeat(70))
 console.log("📊 TEST RESULTS")
-console.log("=" .repeat(70))
+console.log("=".repeat(70))
 console.log(`Passed: ${passed} ✅`)
 console.log(`Failed: ${failed} ❌`)
-console.log("=" .repeat(70))
+console.log("=".repeat(70))
 
 if (failed === 0) {
   console.log("\n🎉 All integration tests passed!")

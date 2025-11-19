@@ -67,13 +67,10 @@ try {
 
   // Test 3: Test connection
   console.log("\n🧪 TEST 3: Testing Azure OpenAI connection...")
-  const response = await model.invoke([
-    { role: "user", content: "Say 'test successful' if you can read this." } as any,
-  ])
+  const response = await model.invoke([{ role: "user", content: "Say 'test successful' if you can read this." } as any])
 
   console.log("✅ Connection successful!")
   console.log(`   Response: ${String(response.content).substring(0, 100)}`)
-
 } catch (error) {
   console.error("❌ Azure OpenAI test failed:", error)
   process.exit(1)
@@ -105,7 +102,6 @@ try {
   const response = await model.invoke(messages)
   console.log("✅ Conversation test successful!")
   console.log(`   Response: ${String(response.content)}`)
-
 } catch (error) {
   console.error("❌ Conversation test failed:", error)
   process.exit(1)

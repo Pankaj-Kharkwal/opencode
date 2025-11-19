@@ -12,7 +12,7 @@ const apiVersion = process.env.AZURE_OPENAI_API_VERSION!
 const deployment = process.env.AZURE_OPENAI_DEPLOYMENT_CHAT!
 
 // Clean endpoint (remove trailing slash)
-const cleanEndpoint = endpoint.endsWith('/') ? endpoint.slice(0, -1) : endpoint
+const cleanEndpoint = endpoint.endsWith("/") ? endpoint.slice(0, -1) : endpoint
 
 const url = `${cleanEndpoint}/openai/deployments/${deployment}/chat/completions?api-version=${apiVersion}`
 
@@ -29,9 +29,7 @@ try {
       "api-key": apiKey,
     },
     body: JSON.stringify({
-      messages: [
-        { role: "user", content: "Say 'test successful' if you can read this." }
-      ],
+      messages: [{ role: "user", content: "Say 'test successful' if you can read this." }],
       max_tokens: 50,
       temperature: 0.7,
     }),
@@ -51,7 +49,6 @@ try {
   console.log("✅ Success!")
   console.log(`Response: ${message}`)
   console.log("\n✅ Azure OpenAI API is working correctly!")
-
 } catch (error) {
   console.error("❌ Test failed:", error)
   process.exit(1)

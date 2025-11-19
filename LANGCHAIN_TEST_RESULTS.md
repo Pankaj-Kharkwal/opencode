@@ -26,12 +26,14 @@ All LangChain integration tests passed successfully! The integration is working 
 ## 📊 Features Validated
 
 ### ✅ Core Integration
+
 - [x] All LangChain packages installed correctly
 - [x] Provider adapter supports Azure OpenAI
 - [x] Message format conversion working
 - [x] Memory and RAG systems operational
 
 ### ✅ Tool System
+
 - [x] 7 common tools created:
   - bash - Execute shell commands
   - read - Read files
@@ -42,6 +44,7 @@ All LangChain integration tests passed successfully! The integration is working 
   - task - Delegate to subagents
 
 ### ✅ Workflow Templates
+
 - [x] 6 ready-to-use workflows:
   1. code_quality - Lint → Format → Type Check → Test
   2. feature_implementation - Research → Plan → Implement → Test → Document
@@ -51,11 +54,13 @@ All LangChain integration tests passed successfully! The integration is working 
   6. database_migration - Backup → Migrate → Verify → Rollback
 
 ### ✅ Agent Definitions
+
 - [x] langchain-workflow.md - Multi-step workflow agent
 - [x] code-reviewer.md - Code review with security analysis
 - [x] rag-assistant.md - RAG-powered semantic search assistant
 
 ### ✅ Advanced Features
+
 - [x] Resumable workflows with state management
 - [x] Memory management with conversation history
 - [x] Vector store for semantic search
@@ -71,6 +76,7 @@ All LangChain integration tests passed successfully! The integration is working 
 The Azure OpenAI API is returning **403 Forbidden** errors. This is **not** an integration issue - the LangChain integration code is working correctly.
 
 ### Your Azure Configuration:
+
 ```
 Endpoint: https://ai-pkharkwal1994-2750.cognitiveservices.azure.com/
 API Version: 2024-08-01-preview
@@ -104,6 +110,7 @@ API Key: 8BJ32P8h4gVVkIU0IxG1ztncmVZbc5... (set)
 ### How to Fix:
 
 1. **Check Azure Portal**
+
    ```
    1. Go to https://portal.azure.com
    2. Navigate to your Azure OpenAI resource
@@ -113,6 +120,7 @@ API Key: 8BJ32P8h4gVVkIU0IxG1ztncmVZbc5... (set)
    ```
 
 2. **Test with Azure CLI**
+
    ```bash
    # List your deployments
    az cognitiveservices account deployment list \
@@ -128,12 +136,14 @@ API Key: 8BJ32P8h4gVVkIU0IxG1ztncmVZbc5... (set)
 
 3. **Try Different Deployment**
    If gpt-5-mini doesn't exist, try gpt-4.1-mini:
+
    ```bash
    export AZURE_OPENAI_DEPLOYMENT_CHAT="gpt-4.1-mini"
    ```
 
 4. **Verify in OpenCode**
    Once Azure is working, test with:
+
    ```typescript
    import { LangChainProvider } from "@/langchain"
 
@@ -142,9 +152,7 @@ API Key: 8BJ32P8h4gVVkIU0IxG1ztncmVZbc5... (set)
      model: "gpt-5-mini", // or "gpt-4.1-mini"
    })
 
-   const response = await model.invoke([
-     { role: "user", content: "Hello!" }
-   ])
+   const response = await model.invoke([{ role: "user", content: "Hello!" }])
    ```
 
 ---
@@ -152,6 +160,7 @@ API Key: 8BJ32P8h4gVVkIU0IxG1ztncmVZbc5... (set)
 ## 🚀 How to Use (Once Azure is Fixed)
 
 ### 1. Quick Test via REPL
+
 ```bash
 cd packages/opencode
 bun repl
@@ -164,22 +173,22 @@ const { LangChainProvider } = await import("./src/langchain/index.ts")
 // Create model
 const model = await LangChainProvider.createChatModel({
   provider: "azure-openai",
-  model: "gpt-5-mini"
+  model: "gpt-5-mini",
 })
 
 // Test
-const response = await model.invoke([
-  { role: "user", content: "Say hello!" }
-])
+const response = await model.invoke([{ role: "user", content: "Say hello!" }])
 console.log(response.content)
 ```
 
 ### 2. Use New Agents
+
 ```bash
 packages/opencode/bin/opencode
 ```
 
 In OpenCode:
+
 ```
 > Use the langchain-workflow agent to analyze README.md
 
@@ -189,6 +198,7 @@ In OpenCode:
 ```
 
 ### 3. Use Workflow Templates
+
 ```typescript
 import { WorkflowTemplates } from "@/langchain"
 
@@ -200,15 +210,14 @@ await workflow.execute({ files: ["src/**/*.ts"] })
 ```
 
 ### 4. Use RAG System
+
 ```typescript
 import { LangChainMemory } from "@/langchain"
 
 // Create RAG session
 const { query, retrieveContext } = await LangChainMemory.createRAGSession({
   sessionID: "my-session",
-  codeFiles: [
-    { path: "src/index.ts", content: "..." },
-  ]
+  codeFiles: [{ path: "src/index.ts", content: "..." }],
 })
 
 // Query with context
@@ -224,6 +233,7 @@ const context = await retrieveContext("How does authentication work?")
 3. **test-langchain-offline.ts** - Offline integration tests (✅ ALL PASSED)
 
 Run offline tests:
+
 ```bash
 bun run test-langchain-offline.ts
 ```
@@ -243,17 +253,17 @@ bun run test-langchain-offline.ts
    - workflows.ts (Zod schema issues)
    - resumable.ts (type exports)
 
-   *Note: These are type-only issues - code works at runtime!*
+   _Note: These are type-only issues - code works at runtime!_
 
 ---
 
 ## ✨ Summary
 
 **Integration Status:** ✅ **READY**
-**Azure API Status:** ⚠️  **Needs Permission Fix**
+**Azure API Status:** ⚠️ **Needs Permission Fix**
 **Tests Passed:** ✅ **10/10**
 **Code Working:** ✅ **Yes**
-**Type Errors:** ⚠️  **Some (non-blocking)**
+**Type Errors:** ⚠️ **Some (non-blocking)**
 
 **Once Azure permissions are fixed, everything will work perfectly!**
 
@@ -271,6 +281,7 @@ bun run test-langchain-offline.ts
 ## 🆘 Support
 
 If issues persist after fixing Azure:
+
 1. Enable verbose logging in opencode.jsonc:
    ```json
    {
