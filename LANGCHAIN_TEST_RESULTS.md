@@ -296,3 +296,130 @@ If issues persist after fixing Azure:
    ```
 2. Check logs in `~/.opencode/logs/`
 3. Run offline tests to verify integration: `bun run test-langchain-offline.ts`
+
+---
+
+## 🔄 UPDATE: Azure AI Projects Support Added!
+
+### ✅ New Provider: `azure-ai-projects`
+
+We've added support for **Azure AI Projects** (different from Azure OpenAI) with the **gpt-4o** model!
+
+### What's the Difference?
+
+| Feature | Azure OpenAI | Azure AI Projects |
+|---------|-------------|-------------------|
+| **Service** | Direct Azure OpenAI Service | Azure AI Foundry Projects |
+| **Endpoint** | `*.cognitiveservices.azure.com` | `*.services.ai.azure.com/api/projects/*` |
+| **Authentication** | API Key | OAuth (DefaultAzureCredential) |
+| **Provider Name** | `azure` or `azure-openai` | `azure-ai-projects` |
+| **Models** | Various GPT models | gpt-4o, gpt-4, etc. |
+| **Use Case** | Direct API access | Agent-based projects |
+
+### 🚀 How to Use Azure AI Projects
+
+#### 1. Set Environment Variables
+
+```bash
+# Required
+export AZURE_AI_PROJECT_ENDPOINT="https://ai-pkharkwal1994-2750.services.ai.azure.com/api/projects/ai-pkharkwal1994-2750-project"
+
+# Optional (defaults shown)
+export AZURE_AI_DEPLOYMENT="gpt-4o"
+export AZURE_AI_API_VERSION="2024-08-01-preview"
+```
+
+#### 2. Authenticate with Azure
+
+```bash
+# Login to Azure (required for OAuth authentication)
+az login
+```
+
+#### 3. Test the Integration
+
+```bash
+cd packages/opencode
+bun run test-azure-projects.ts
+```
+
+This will run 7 tests:
+1. Azure authentication check
+2. LangChain provider import
+3. Model creation
+4. Simple completion
+5. Conversation with system message
+6. Message format conversion
+7. Integration with memory
+
+#### 4. Use in Your Code
+
+```typescript
+import { LangChainProvider } from "@/langchain"
+
+// Create Azure AI Projects model
+const model = await LangChainProvider.createChatModel({
+  provider: "azure-ai-projects",
+  model: "gpt-4o",
+  temperature: 0.7,
+})
+
+// Use the model
+const response = await model.invoke([
+  { role: "user", content: "Hello, Azure AI Projects!" }
+])
+
+console.log(response.content)
+```
+
+#### 5. Use in OpenCode REPL
+
+```bash
+cd packages/opencode
+bun repl
+```
+
+```typescript
+const { LangChainProvider } = await import("./src/langchain/index.ts")
+
+const model = await LangChainProvider.createChatModel({
+  provider: "azure-ai-projects",
+  model: "gpt-4o"
+})
+
+const response = await model.invoke([
+  { role: "user", content: "Explain Azure AI Projects in one sentence" }
+])
+
+console.log(response.content)
+```
+
+### 📦 Dependencies Added
+
+```json
+"@azure/identity": "^4.0.0",
+"@azure/core-auth": "^1.5.0"
+```
+
+These packages provide DefaultAzureCredential for OAuth authentication with Azure.
+
+### 🔐 Authentication Methods
+
+DefaultAzureCredential tries multiple authentication methods in order:
+1. **Environment variables** (AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET)
+2. **Managed Identity** (when running in Azure)
+3. **Azure CLI** (az login)
+4. **Azure PowerShell**
+5. **Interactive browser** (fallback)
+
+For local development, **Azure CLI** (az login) is the easiest method.
+
+### ✨ Summary
+
+- ✅ Added `azure-ai-projects` provider to LangChain integration
+- ✅ Support for gpt-4o model (default)
+- ✅ OAuth authentication with DefaultAzureCredential
+- ✅ Created comprehensive test script
+- ✅ Works with all existing LangChain features (memory, RAG, workflows, etc.)
+
+**Your Azure AI Projects setup is now ready to use!**

@@ -92,6 +92,8 @@
     "@langchain/anthropic": "0.3.10",
     "@langchain/openai": "0.3.15",
     "langchain": "0.3.9",
-    "@langchain/langgraph": "0.2.31"
+    "@langchain/langgraph": "0.2.31",
+    "@azure/identity": "^4.0.0",
+    "@azure/core-auth": "^1.5.0"
   }
 }

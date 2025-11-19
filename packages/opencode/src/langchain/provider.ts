@@ -152,6 +152,55 @@ export namespace LangChainProvider {
         })
       }
 
+      case "azure-projects":
+      case "azure-ai-projects": {
+        const { DefaultAzureCredential } = await import("@azure/identity")
+
+        // Azure AI Projects uses OAuth with DefaultAzureCredential
+        const credential = new DefaultAzureCredential()
+        const projectEndpoint = baseURL || process.env.AZURE_AI_PROJECT_ENDPOINT
+        const deploymentName = model || process.env.AZURE_AI_DEPLOYMENT || "gpt-4o"
+        const apiVersion = process.env.AZURE_AI_API_VERSION || "2024-08-01-preview"
+
+        if (!projectEndpoint) {
+          throw new Error("Azure AI Projects endpoint not found (AZURE_AI_PROJECT_ENDPOINT)")
+        }
+
+        log.info(`Creating Azure AI Projects model: ${deploymentName} at ${projectEndpoint}`)
+
+        // Get access token for Azure AI Services
+        const tokenResponse = await credential.getToken("https://cognitiveservices.azure.com/.default")
+
+        if (!tokenResponse?.token) {
+          throw new Error("Failed to get Azure access token. Ensure you are authenticated with Azure CLI (az login)")
+        }
+
+        // Azure AI Projects endpoint format:
+        // https://{resource}.services.ai.azure.com/api/projects/{project}/openai/deployments/{deployment}/chat/completions
+        const chatEndpoint = `${projectEndpoint}/openai/deployments/${deploymentName}/chat/completions?api-version=${apiVersion}`
+
+        log.info(`Azure AI Projects chat endpoint: ${chatEndpoint}`)
+
+        // Create a custom ChatOpenAI instance with bearer token authentication
+        return new ChatOpenAI({
+          openAIApiKey: tokenResponse.token, // Use the access token as the API key
+          model: deploymentName,
+          temperature: mergedOptions.temperature,
+          maxTokens: mergedOptions.maxTokens,
+          streaming: mergedOptions.streaming,
+          topP: mergedOptions.topP,
+          frequencyPenalty: mergedOptions.frequencyPenalty,
+          presencePenalty: mergedOptions.presencePenalty,
+          configuration: {
+            baseURL: projectEndpoint + "/openai",
+            defaultHeaders: {
+              "Authorization": `Bearer ${tokenResponse.token}`,
+              "api-key": "", // Override to prevent api-key header
+            },
+          },
+        })
+      }
+
       default:
         throw new Error(`Unsupported provider for LangChain: ${provider}`)
     }
