@@ -307,14 +307,14 @@ We've added support for **Azure AI Projects** (different from Azure OpenAI) with
 
 ### What's the Difference?
 
-| Feature | Azure OpenAI | Azure AI Projects |
-|---------|-------------|-------------------|
-| **Service** | Direct Azure OpenAI Service | Azure AI Foundry Projects |
-| **Endpoint** | `*.cognitiveservices.azure.com` | `*.services.ai.azure.com/api/projects/*` |
-| **Authentication** | API Key | OAuth (DefaultAzureCredential) |
-| **Provider Name** | `azure` or `azure-openai` | `azure-ai-projects` |
-| **Models** | Various GPT models | gpt-4o, gpt-4, etc. |
-| **Use Case** | Direct API access | Agent-based projects |
+| Feature            | Azure OpenAI                    | Azure AI Projects                        |
+| ------------------ | ------------------------------- | ---------------------------------------- |
+| **Service**        | Direct Azure OpenAI Service     | Azure AI Foundry Projects                |
+| **Endpoint**       | `*.cognitiveservices.azure.com` | `*.services.ai.azure.com/api/projects/*` |
+| **Authentication** | API Key                         | OAuth (DefaultAzureCredential)           |
+| **Provider Name**  | `azure` or `azure-openai`       | `azure-ai-projects`                      |
+| **Models**         | Various GPT models              | gpt-4o, gpt-4, etc.                      |
+| **Use Case**       | Direct API access               | Agent-based projects                     |
 
 ### 🚀 How to Use Azure AI Projects
 
@@ -344,6 +344,7 @@ bun run test-azure-projects.ts
 ```
 
 This will run 7 tests:
+
 1. Azure authentication check
 2. LangChain provider import
 3. Model creation
@@ -365,9 +366,7 @@ const model = await LangChainProvider.createChatModel({
 })
 
 // Use the model
-const response = await model.invoke([
-  { role: "user", content: "Hello, Azure AI Projects!" }
-])
+const response = await model.invoke([{ role: "user", content: "Hello, Azure AI Projects!" }])
 
 console.log(response.content)
 ```
@@ -384,12 +383,10 @@ const { LangChainProvider } = await import("./src/langchain/index.ts")
 
 const model = await LangChainProvider.createChatModel({
   provider: "azure-ai-projects",
-  model: "gpt-4o"
+  model: "gpt-4o",
 })
 
-const response = await model.invoke([
-  { role: "user", content: "Explain Azure AI Projects in one sentence" }
-])
+const response = await model.invoke([{ role: "user", content: "Explain Azure AI Projects in one sentence" }])
 
 console.log(response.content)
 ```
@@ -406,6 +403,7 @@ These packages provide DefaultAzureCredential for OAuth authentication with Azur
 ### 🔐 Authentication Methods
 
 DefaultAzureCredential tries multiple authentication methods in order:
+
 1. **Environment variables** (AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET)
 2. **Managed Identity** (when running in Azure)
 3. **Azure CLI** (az login)

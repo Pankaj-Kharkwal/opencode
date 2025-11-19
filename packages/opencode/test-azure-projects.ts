@@ -10,14 +10,9 @@ console.log("=".repeat(70))
 
 // Check environment variables
 console.log("\n📋 Checking Azure AI Projects Configuration...")
-const requiredEnvVars = [
-  "AZURE_AI_PROJECT_ENDPOINT",
-]
+const requiredEnvVars = ["AZURE_AI_PROJECT_ENDPOINT"]
 
-const optionalEnvVars = [
-  "AZURE_AI_DEPLOYMENT",
-  "AZURE_AI_API_VERSION",
-]
+const optionalEnvVars = ["AZURE_AI_DEPLOYMENT", "AZURE_AI_API_VERSION"]
 
 let configOk = true
 for (const envVar of requiredEnvVars) {
@@ -43,7 +38,9 @@ if (!configOk) {
   console.error("\n❌ Missing required environment variables!")
   console.error("\nRequired configuration:")
   console.error("  AZURE_AI_PROJECT_ENDPOINT - Your Azure AI Projects endpoint")
-  console.error("    Example: https://ai-pkharkwal1994-2750.services.ai.azure.com/api/projects/ai-pkharkwal1994-2750-project")
+  console.error(
+    "    Example: https://ai-pkharkwal1994-2750.services.ai.azure.com/api/projects/ai-pkharkwal1994-2750-project",
+  )
   console.error("\nOptional configuration:")
   console.error("  AZURE_AI_DEPLOYMENT - Model deployment name (default: gpt-4o)")
   console.error("  AZURE_AI_API_VERSION - API version (default: 2024-08-01-preview)")

@@ -194,7 +194,7 @@ export namespace LangChainProvider {
           configuration: {
             baseURL: projectEndpoint + "/openai",
             defaultHeaders: {
-              "Authorization": `Bearer ${tokenResponse.token}`,
+              Authorization: `Bearer ${tokenResponse.token}`,
               "api-key": "", // Override to prevent api-key header
             },
           },
