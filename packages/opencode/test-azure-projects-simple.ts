@@ -10,15 +10,15 @@ console.log("=".repeat(70))
 
 // Test 1: Check environment setup
 console.log("\n✅ TEST 1: Environment Configuration")
-console.log(`   AZURE_AI_PROJECT_ENDPOINT: ${process.env.AZURE_AI_PROJECT_ENDPOINT || 'NOT SET'}`)
-console.log(`   AZURE_AI_DEPLOYMENT: ${process.env.AZURE_AI_DEPLOYMENT || 'gpt-4o (default)'}`)
-console.log(`   AZURE_CLIENT_ID: ${process.env.AZURE_CLIENT_ID ? '✓ SET' : 'NOT SET'}`)
-console.log(`   AZURE_TENANT_ID: ${process.env.AZURE_TENANT_ID ? '✓ SET' : 'NOT SET'}`)
+console.log(`   AZURE_AI_PROJECT_ENDPOINT: ${process.env.AZURE_AI_PROJECT_ENDPOINT || "NOT SET"}`)
+console.log(`   AZURE_AI_DEPLOYMENT: ${process.env.AZURE_AI_DEPLOYMENT || "gpt-4o (default)"}`)
+console.log(`   AZURE_CLIENT_ID: ${process.env.AZURE_CLIENT_ID ? "✓ SET" : "NOT SET"}`)
+console.log(`   AZURE_TENANT_ID: ${process.env.AZURE_TENANT_ID ? "✓ SET" : "NOT SET"}`)
 
 // Test 2: Verify provider code structure
 console.log("\n✅ TEST 2: Provider Code Structure")
 try {
-  const providerCode = await Bun.file('./src/langchain/provider.ts').text()
+  const providerCode = await Bun.file("./src/langchain/provider.ts").text()
 
   // Check for azure-ai-projects case
   if (providerCode.includes('case "azure-ai-projects":')) {
@@ -28,7 +28,7 @@ try {
   }
 
   // Check for DefaultAzureCredential import
-  if (providerCode.includes('DefaultAzureCredential')) {
+  if (providerCode.includes("DefaultAzureCredential")) {
     console.log("   ✓ DefaultAzureCredential authentication configured")
   }
 
@@ -38,15 +38,14 @@ try {
   }
 
   // Check for OAuth token handling
-  if (providerCode.includes('credential.getToken')) {
+  if (providerCode.includes("credential.getToken")) {
     console.log("   ✓ OAuth token retrieval implemented")
   }
 
   // Check for correct endpoint structure
-  if (providerCode.includes('AZURE_AI_PROJECT_ENDPOINT')) {
+  if (providerCode.includes("AZURE_AI_PROJECT_ENDPOINT")) {
     console.log("   ✓ Azure AI Projects endpoint configuration found")
   }
-
 } catch (error) {
   console.error("   ✗ Error reading provider code:", error)
 }
@@ -54,24 +53,23 @@ try {
 // Test 3: Check package.json dependencies
 console.log("\n✅ TEST 3: Dependencies Configuration")
 try {
-  const packageJson = await Bun.file('./package.json').json()
+  const packageJson = await Bun.file("./package.json").json()
 
-  if (packageJson.dependencies['@azure/identity']) {
-    console.log(`   ✓ @azure/identity: ${packageJson.dependencies['@azure/identity']}`)
+  if (packageJson.dependencies["@azure/identity"]) {
+    console.log(`   ✓ @azure/identity: ${packageJson.dependencies["@azure/identity"]}`)
   } else {
     console.log("   ✗ @azure/identity not in dependencies")
   }
 
-  if (packageJson.dependencies['@azure/core-auth']) {
-    console.log(`   ✓ @azure/core-auth: ${packageJson.dependencies['@azure/core-auth']}`)
+  if (packageJson.dependencies["@azure/core-auth"]) {
+    console.log(`   ✓ @azure/core-auth: ${packageJson.dependencies["@azure/core-auth"]}`)
   } else {
     console.log("   ✗ @azure/core-auth not in dependencies")
   }
 
-  if (packageJson.dependencies['@langchain/openai']) {
-    console.log(`   ✓ @langchain/openai: ${packageJson.dependencies['@langchain/openai']}`)
+  if (packageJson.dependencies["@langchain/openai"]) {
+    console.log(`   ✓ @langchain/openai: ${packageJson.dependencies["@langchain/openai"]}`)
   }
-
 } catch (error) {
   console.error("   ✗ Error reading package.json:", error)
 }
@@ -79,21 +77,20 @@ try {
 // Test 4: Verify test script exists
 console.log("\n✅ TEST 4: Test Script")
 try {
-  const testScript = await Bun.file('./test-azure-projects.ts').text()
-  const lines = testScript.split('\n').length
+  const testScript = await Bun.file("./test-azure-projects.ts").text()
+  const lines = testScript.split("\n").length
   console.log(`   ✓ test-azure-projects.ts exists (${lines} lines)`)
 
-  if (testScript.includes('DefaultAzureCredential')) {
+  if (testScript.includes("DefaultAzureCredential")) {
     console.log("   ✓ Uses DefaultAzureCredential for authentication")
   }
 
-  if (testScript.includes('gpt-4o')) {
+  if (testScript.includes("gpt-4o")) {
     console.log("   ✓ Configured for gpt-4o model")
   }
 
   const testCount = (testScript.match(/TEST \d+:/g) || []).length
   console.log(`   ✓ Contains ${testCount} test cases`)
-
 } catch (error) {
   console.error("   ✗ Error reading test script:", error)
 }
@@ -101,20 +98,19 @@ try {
 // Test 5: Check documentation
 console.log("\n✅ TEST 5: Documentation")
 try {
-  const docs = await Bun.file('../../LANGCHAIN_TEST_RESULTS.md').text()
+  const docs = await Bun.file("../../LANGCHAIN_TEST_RESULTS.md").text()
 
-  if (docs.includes('azure-ai-projects')) {
+  if (docs.includes("azure-ai-projects")) {
     console.log("   ✓ Azure AI Projects documented")
   }
 
-  if (docs.includes('gpt-4o')) {
+  if (docs.includes("gpt-4o")) {
     console.log("   ✓ gpt-4o model documented")
   }
 
-  if (docs.includes('DefaultAzureCredential')) {
+  if (docs.includes("DefaultAzureCredential")) {
     console.log("   ✓ Authentication method documented")
   }
-
 } catch (error) {
   console.error("   ✗ Error reading documentation:", error)
 }

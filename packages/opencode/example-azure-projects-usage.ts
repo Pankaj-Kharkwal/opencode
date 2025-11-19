@@ -20,9 +20,7 @@ async function basicExample() {
   })
 
   // Send a message
-  const response = await model.invoke([
-    { role: "user", content: "Explain Azure AI Projects in one sentence" }
-  ])
+  const response = await model.invoke([{ role: "user", content: "Explain Azure AI Projects in one sentence" }])
 
   console.log("Response:", response.content)
   console.log()
@@ -66,9 +64,7 @@ async function memoryExample() {
   const sessionId = "example-session"
 
   // First message
-  await memory.saveMessages(sessionId, [
-    { role: "user", content: "My name is Alice", _getType: () => "human" }
-  ])
+  await memory.saveMessages(sessionId, [{ role: "user", content: "My name is Alice", _getType: () => "human" }])
 
   // Get history and add new message
   const history = await memory.getHistory(sessionId)
@@ -91,9 +87,7 @@ async function streamingExample() {
     streaming: true,
   })
 
-  const stream = await model.stream([
-    { role: "user", content: "Count from 1 to 5" }
-  ])
+  const stream = await model.stream([{ role: "user", content: "Count from 1 to 5" }])
 
   process.stdout.write("Response: ")
   for await (const chunk of stream) {
@@ -116,9 +110,7 @@ async function customEndpointExample() {
     maxTokens: 200,
   })
 
-  const response = await model.invoke([
-    { role: "user", content: "Hello Azure!" }
-  ])
+  const response = await model.invoke([{ role: "user", content: "Hello Azure!" }])
 
   console.log("Response:", response.content)
   console.log()
@@ -153,9 +145,9 @@ async function main() {
   console.log()
 
   console.log("Environment:")
-  console.log(`  Endpoint: ${process.env.AZURE_AI_PROJECT_ENDPOINT || 'NOT SET'}`)
-  console.log(`  Model: ${process.env.AZURE_AI_DEPLOYMENT || 'gpt-4o (default)'}`)
-  console.log(`  Client ID: ${process.env.AZURE_CLIENT_ID ? '✓' : '✗'}`)
+  console.log(`  Endpoint: ${process.env.AZURE_AI_PROJECT_ENDPOINT || "NOT SET"}`)
+  console.log(`  Model: ${process.env.AZURE_AI_DEPLOYMENT || "gpt-4o (default)"}`)
+  console.log(`  Client ID: ${process.env.AZURE_CLIENT_ID ? "✓" : "✗"}`)
   console.log()
 
   // Check if dependencies are installed
