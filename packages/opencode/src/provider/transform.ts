@@ -120,6 +120,7 @@ export namespace ProviderTransform {
   export function temperature(_providerID: string, modelID: string) {
     if (modelID.toLowerCase().includes("qwen")) return 0.55
     if (modelID.toLowerCase().includes("claude")) return undefined
+    if (modelID.toLowerCase().includes("gemini-3-pro")) return 1.0
     return 0
   }
 
@@ -136,7 +137,7 @@ export namespace ProviderTransform {
   ): Record<string, any> | undefined {
     const result: Record<string, any> = {}
 
-    if (providerID === "openai" || npm.includes("openai")) {
+    if (providerID === "openai") {
       result["promptCacheKey"] = sessionID
     }
 
@@ -176,6 +177,10 @@ export namespace ProviderTransform {
       case "@ai-sdk/anthropic":
         return {
           ["anthropic" as string]: options,
+        }
+      case "@ai-sdk/gateway":
+        return {
+          ["gateway" as string]: options,
         }
       default:
         return {
