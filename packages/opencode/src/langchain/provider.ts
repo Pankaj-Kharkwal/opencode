@@ -116,6 +116,42 @@ export namespace LangChainProvider {
         })
       }
 
+      case "azure":
+      case "azure-openai": {
+        const key = apiKey || process.env.AZURE_OPENAI_API_KEY
+        const endpoint = baseURL || process.env.AZURE_OPENAI_ENDPOINT
+        const apiVersion = process.env.AZURE_OPENAI_API_VERSION || "2024-08-01-preview"
+
+        if (!key) {
+          throw new Error("Azure OpenAI API key not found (AZURE_OPENAI_API_KEY)")
+        }
+        if (!endpoint) {
+          throw new Error("Azure OpenAI endpoint not found (AZURE_OPENAI_ENDPOINT)")
+        }
+
+        // Azure uses deployment names, not model names
+        // Model param should be the deployment name (e.g., gpt-4.1-mini)
+        const deploymentName = model || process.env.AZURE_OPENAI_DEPLOYMENT_CHAT
+
+        log.info(`Creating Azure OpenAI model: ${deploymentName} at ${endpoint}`)
+
+        return new ChatOpenAI({
+          azureOpenAIApiKey: key,
+          azureOpenAIApiDeploymentName: deploymentName,
+          azureOpenAIApiInstanceName: "", // Not needed when using full endpoint
+          azureOpenAIApiVersion: apiVersion,
+          temperature: mergedOptions.temperature,
+          maxTokens: mergedOptions.maxTokens,
+          streaming: mergedOptions.streaming,
+          topP: mergedOptions.topP,
+          frequencyPenalty: mergedOptions.frequencyPenalty,
+          presencePenalty: mergedOptions.presencePenalty,
+          configuration: {
+            baseURL: endpoint,
+          },
+        })
+      }
+
       default:
         throw new Error(`Unsupported provider for LangChain: ${provider}`)
     }
